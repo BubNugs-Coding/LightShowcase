@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Light — Season One: Awakening</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep: #0B0F14;
+      --bg-charcoal: #0E1116;
+      --bg-card: #141920;
+      --accent-blue: #2E8FFF;
+      --accent-blue-hover: #3BA6FF;
+      --accent-blue-soft: #6EC3FF;
+      --accent-blue-dim: rgba(46, 143, 255, 0.35);
+      --accent-purple: #4A1E66;
+      --accent-purple-soft: #6B2C91;
+      --accent-purple-dim: rgba(74, 30, 102, 0.4);
+      --text-primary: #e8ecf0;
+      --text-muted: #8b929e;
+      --border-subtle: rgba(46, 143, 255, 0.15);
+      --glow-blue: 0 0 28px rgba(46, 143, 255, 0.18);
+      --glow-blue-soft: 0 0 40px rgba(46, 143, 255, 0.08);
+      --glow-purple: 0 0 24px rgba(74, 30, 102, 0.25);
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Source Sans 3', -apple-system, sans-serif;
+      --section-padding: clamp(4rem, 10vw, 8rem);
+      --content-max: 72rem;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      position: relative;
+      font-family: var(--sans);
+      font-weight: 400;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: var(--text-primary);
+      background: var(--bg-deep);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Full-page fade: Lucas blue (top) → Derrik purple (bottom) as you scroll */
+    body::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(46, 143, 255, 0.07) 0%,
+        rgba(46, 143, 255, 0.02) 30%,
+        transparent 50%,
+        rgba(74, 30, 102, 0.02) 70%,
+        rgba(74, 30, 102, 0.08) 100%
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: linear-gradient(180deg, rgba(255,255,255,0.012) 0%, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.008) 0%, transparent 1px);
+      background-size: 4px 4px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Hero: neutral dark + faint blue accent (Lucas awakening) */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 20%, rgba(46, 143, 255, 0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-stars {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,0.12), transparent),
+        radial-gradient(1.5px 1.5px at 60% 70%, rgba(255,255,255,0.08), transparent),
+        radial-gradient(1px 1px at 80% 20%, rgba(255,255,255,0.1), transparent),
+        radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.06), transparent);
+      background-size: 200% 200%;
+      animation: stars 20s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes stars {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    /* Sections */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: var(--section-padding) 1.5rem;
+      max-width: 100%;
+    }
+
+    .section-inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: 0.02em;
+      color: #fff;
+      margin: 0 0 2.5rem;
+      text-align: center;
+      position: relative;
+      text-shadow: 0 0 32px rgba(46, 143, 255, 0.2);
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 4rem;
+      height: 2px;
+      margin: 0.75rem auto 0;
+      background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+      opacity: 0.6;
+      border-radius: 1px;
+    }
+
+    /* Image placeholders */
+    .img-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    /* When placeholder contains a real image: no border/padding, image fills box */
+    .img-placeholder:has(img) {
+      padding: 0;
+      border: none;
+      background: transparent;
+    }
+
+    .img-placeholder.wide {
+      width: 100%;
+      min-height: 280px;
+      margin: 2rem 0 4rem;
+    }
+
+    .img-placeholder.tall {
+      min-height: 360px;
+      aspect-ratio: 3/4;
+    }
+
+    .img-placeholder.square {
+      aspect-ratio: 1;
+      min-height: 200px;
+    }
+
+    .img-placeholder.centered {
+      max-width: 480px;
+      min-height: 320px;
+      margin: 0 auto 2rem;
+    }
+
+    /* Real images: fill box. Use contain for map so the full map is visible */
+    .img-placeholder img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .img-placeholder.tall img {
+      object-fit: contain;
+    }
+
+    /* ----- HERO ----- */
+    .hero {
+      position: relative;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1.5rem 4rem;
+      overflow: hidden;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: clamp(3.5rem, 12vw, 7rem);
+      letter-spacing: 0.15em;
+      color: #fff;
+      margin: 0;
+      text-shadow: 0 0 40px rgba(46, 143, 255, 0.25);
+    }
+
+    .hero .subtitle {
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+      font-weight: 400;
+      color: var(--accent-blue-soft);
+      letter-spacing: 0.12em;
+      margin: 0.75rem 0 2.5rem;
+    }
+
+    .hero .intro {
+      max-width: 42rem;
+      margin: 0 auto 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-weight: 300;
+      font-size: 1rem;
+    }
+
+    .hero-cta {
+      margin: 0 auto 3rem;
+      text-align: center;
+    }
+
+    .hero-link {
+      color: var(--accent-blue-soft);
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent-blue-dim);
+      padding-bottom: 2px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .hero-link:hover {
+      color: var(--accent-blue);
+      border-bottom-color: var(--accent-blue);
+    }
+
+    .hero .banner-wrap {
+      width: 100%;
+      max-width: var(--content-max);
+      margin: 0 auto;
+    }
+
+    /* ----- MAP SECTION ----- */
+    .map-section .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .map-section .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .map-section .description {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    /* Accordion */
+    .accordion {
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .accordion-item:last-child {
+      border-bottom: none;
+    }
+
+    .accordion-trigger {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      background: var(--bg-card);
+      border: none;
+      color: var(--text-primary);
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .accordion-trigger:hover {
+      background: var(--bg-charcoal);
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 1px var(--accent-blue-dim), var(--glow-blue-soft);
+    }
+
+    .accordion-trigger::after {
+      content: '+';
+      font-size: 1.25rem;
+      color: var(--accent-blue);
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-trigger[aria-expanded="true"]::after {
+      transform: rotate(45deg);
+    }
+
+    .accordion-panel {
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+
+    .accordion-panel[data-open] {
+      max-height: 320px;
+    }
+
+    .accordion-panel p {
+      margin: 0;
+      padding: 1rem 1.25rem 1.25rem;
+      background: var(--bg-charcoal);
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* ----- CHARACTER ARCS ----- */
+    .characters-section {
+      position: relative;
+      background: var(--bg-charcoal);
+    }
+
+    .characters-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 100% 80% at 50% 30%, rgba(46, 143, 255, 0.04) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    .characters-section .section-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .char-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .char-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .char-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .char-panel:hover {
+      border-color: var(--accent-blue-dim);
+      box-shadow: var(--glow-blue-soft);
+    }
+
+    .char-panel.is-open {
+      border-color: var(--accent-blue);
+      box-shadow: var(--glow-blue);
+    }
+
+    .char-panel[data-char="derrik"]:hover,
+    .char-panel[data-char="derrik"].is-open {
+      border-color: var(--accent-purple-dim);
+      box-shadow: var(--glow-purple);
+    }
+
+    .char-panel .img-wrap {
+      aspect-ratio: 1;
+      min-height: 180px;
+    }
+
+    .char-panel .name {
+      padding: 1rem;
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: 1.35rem;
+      color: #fff;
+      text-align: center;
+    }
+
+    .char-panel[data-char="derrik"] .name {
+      color: var(--text-primary);
+    }
+
+    .char-detail {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .char-panel.is-open .char-detail {
+      max-height: 800px;
+    }
+
+    .char-detail-inner {
+      padding: 1rem 1.25rem 1.5rem;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .char-detail-inner p {
+      margin: 0 0 0.6rem;
+    }
+
+    .char-detail-inner p:last-child {
+      margin-bottom: 0;
+    }
+
+    .char-detail-inner strong {
+      color: var(--accent-blue-soft);
+      font-weight: 500;
+    }
+
+    /* ----- STRUCTURAL BREAKDOWN ----- */
+    .breakdown-section {
+      background: var(--bg-charcoal);
+    }
+
+    .breakdown-section .section-inner {
+      max-width: 44rem;
+    }
+
+    .breakdown-intro {
+      max-width: 38rem;
+      margin: 0 auto 2.5rem;
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.65;
+      text-align: center;
+    }
+
+    .breakdown-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .breakdown-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 1.25rem 1.5rem;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .breakdown-block:hover {
+      border-color: rgba(46, 143, 255, 0.25);
+      box-shadow: 0 0 20px rgba(46, 143, 255, 0.08);
+    }
+
+    .breakdown-block--finale:hover {
+      border-color: rgba(74, 30, 102, 0.3);
+      box-shadow: 0 0 20px rgba(74, 30, 102, 0.1);
+    }
+
+    .breakdown-block h3 {
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #fff;
+      margin: 0 0 0.75rem;
+      letter-spacing: 0.02em;
+    }
+
+    .breakdown-block ul {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .breakdown-block li {
+      margin-bottom: 0.35rem;
+    }
+
+    .breakdown-block li:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ----- REALM SYSTEM ----- */
+    .realm-section .two-col {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .realm-section .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .realm-section .prose,
+    .realm-section .realm-prose {
+      max-width: 36rem;
+      margin: 0 auto;
+      color: var(--text-muted);
+    }
+
+    .realm-section .prose p,
+    .realm-section .realm-prose p {
+      margin: 0 0 1rem;
+    }
+
+    /* ----- CRYSTAL SECTION ----- */
+    .crystal-section {
+      position: relative;
+    }
+
+    .crystal-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(46, 143, 255, 0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .crystal-section .section-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .crystal-section .img-placeholder.centered {
+      border: 1px solid var(--accent-blue-dim);
+      box-shadow: 0 0 32px rgba(46, 143, 255, 0.2), inset 0 0 40px rgba(46, 143, 255, 0.03);
+      animation: crystal-shimmer 4s ease-in-out infinite;
+    }
+
+    .crystal-section .img-placeholder.centered:has(img) {
+      border: none;
+      box-shadow: 0 0 24px rgba(46, 143, 255, 0.12);
+    }
+
+    @keyframes crystal-shimmer {
+      0%, 100% { box-shadow: 0 0 32px rgba(46, 143, 255, 0.2), inset 0 0 40px rgba(46, 143, 255, 0.03); }
+      50% { box-shadow: 0 0 40px rgba(46, 143, 255, 0.28), inset 0 0 50px rgba(46, 143, 255, 0.05); }
+    }
+
+    .crystal-section .prose {
+      max-width: 36rem;
+      margin: 0 auto;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .crystal-section .prose p {
+      margin: 0 0 1rem;
+    }
+
+    /* ----- TIMELINE ----- */
+    .timeline-section {
+      position: relative;
+    }
+
+    .timeline-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(74, 30, 102, 0.04) 50%, rgba(74, 30, 102, 0.08) 100%);
+      pointer-events: none;
+    }
+
+    .timeline-section .section-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 36rem;
+      margin: 0 auto 3rem;
+      padding-left: 2rem;
+      border-left: 1px solid var(--border-subtle);
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: -1px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, var(--accent-blue-dim), var(--accent-purple-dim), transparent);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .timeline-node {
+      position: relative;
+      padding: 1rem 0 1rem 1.5rem;
+      border-bottom: 1px solid transparent;
+    }
+
+    .timeline-node:last-child {
+      border-bottom: none;
+    }
+
+    .timeline-node::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 1.5rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+      box-shadow: var(--glow-blue-soft);
+    }
+
+    .timeline-node--derrik-fall::before {
+      background: var(--accent-purple-soft);
+      box-shadow: var(--glow-purple);
+    }
+
+    .timeline-node span {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .timeline .img-placeholder.wide {
+      margin-top: 2rem;
+    }
+
+    /* ----- DESIGN PHILOSOPHY ----- */
+    .philosophy-section {
+      background: var(--bg-charcoal);
+    }
+
+    .philosophy-section ul {
+      max-width: 32rem;
+      margin: 0 auto;
+      padding-left: 1.5rem;
+      color: var(--text-muted);
+      line-height: 2;
+    }
+
+    .philosophy-section li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* ----- PLOT / STORY OVERVIEW ----- */
+    .plot-section {
+      background: var(--bg-charcoal);
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+
+    .plot-section .plot-prose {
+      max-width: 42rem;
+      margin: 0 auto;
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    .plot-section .plot-prose p {
+      margin: 0 0 1.25rem;
+    }
+
+    .plot-section .plot-prose p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Footer spacing */
+    .philosophy-section {
+      padding-bottom: 5rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- 1. HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-stars"></div>
+    <h1>LIGHT</h1>
+    <p class="subtitle">Season One: Awakening</p>
+    <p class="intro">
+      Light is a high-fantasy world where select individuals are born with elemental and cosmic powers that shape the realms they inhabit. This project focuses on developing a long-form serialized narrative following Lucas Alderaunt and the realm of Serenia. Season One establishes the emotional and structural foundation of the larger twelve-season arc.
+    </p>
+    <p class="hero-cta">
+      <a href="#plot" class="hero-link">Read the Season One story</a>
+    </p>
+  </section>
+
+  <!-- 2. THE STORY -->
+  <section class="plot-section" id="plot">
+    <div class="section-inner">
+      <h2 class="section-title">The Story</h2>
+      <div class="plot-prose">
+        <p>Season One introduces Lucas Alderaunt, an ordinary boy in Serenia who has always admired the realm's legendary power wielders but believes he is destined for a mundane life. That belief is shattered when he discovers he is the new Warrior of Light, a title once carried by heroes who shaped Serenia's history. The kingdom itself was founded by a former Warrior of Light, placing immense legacy and expectation on Lucas from the moment he awakens.</p>
+        <p>As Lucas struggles to understand his power and what it means to truly be "chosen," he forms alliances with the Warriors of Fire, Air, Water, and Earth. At the same time, he faces Derrik, the Warrior of Darkness, who seeks the ancient Realm Crystal for his own ends. The Realm Crystal allows passage between Serenia and the neighboring Realm of the Dead, a boundary that must remain stable to preserve the natural order.</p>
+        <p>A parallel conflict unfolds when one of Lucas's allies is revealed to be an escaped ghost, drawing the attention of the Realmkeeper, guardian of the Realm of the Dead. To prevent further destabilization, Lucas negotiates a fragile peace: he will retrieve the stolen Realm Crystal before its misuse tears open the boundary between realms.</p>
+        <p>In the finale, Derrik activates the Crystal in desperation, creating an unstable tear between life and death. The tear begins to unravel reality itself, and Aira, the Warrior of Air, sacrifices herself to enter the rupture and stabilize it from within. Both she and the Crystal vanish. Believing her dead, Lucas confronts Derrik in rage, nearly becoming what he hates. In a final moment of vulnerability, Derrik reveals the weight of his choices before throwing himself from the cliff.</p>
+        <p>Season One ends not with triumph, but with consequence. Lucas learns that power alone does not make someone worthy—restraint and responsibility do. The emotional fallout of these events sets the stage for the larger arc of the series.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. MAP OF SERENIA -->
+  <section class="map-section" id="map">
+    <div class="section-inner">
+      <h2 class="section-title">The Realm of Serenia</h2>
+      <div class="two-col">
+        <div class="img-placeholder tall"><img src="images/Serenia-Map.png" alt="Map of Serenia" /></div>
+        <div>
+          <p class="description">
+            Serenia is the central realm of the story, a kingdom shaped by previous Warriors of Light. It sits unusually close to another realm — the Realm of the Dead — creating instability in the natural flow of souls.
+          </p>
+          <div class="accordion">
+            <div class="accordion-item">
+              <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="acc1" id="acc1-trigger">Capital of Serenia</button>
+              <div class="accordion-panel" id="acc1" role="region" aria-labelledby="acc1-trigger">
+                <p>Home of the current king of Serenia and the royal mages. Explored more in seasons two and three.</p>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="acc2" id="acc2-trigger">Boundary Tear Site (Season One Finale)</button>
+              <div class="accordion-panel" id="acc2" role="region" aria-labelledby="acc2-trigger">
+                <p>High up in the peaks of Warrior's Mountain, Derrik accidentally tore a hole in the realms. Aira was able to close it at the cost of her life and the realm crystal. Also the site of Derrik's supposed death.</p>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="acc3" id="acc3-trigger">The Isle of Darkness</button>
+              <div class="accordion-panel" id="acc3" role="region" aria-labelledby="acc3-trigger">
+                <p>Derrik's home, once part of Serenia itself before it was torn away by an ancient Warrior of Earth.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. CHARACTER ARCS -->
+  <section class="characters-section" id="characters">
+    <div class="section-inner">
+      <h2 class="section-title">Character Arcs — Season One</h2>
+      <div class="char-grid">
+        <div class="char-panel" data-char="lucas" tabindex="0" role="button">
+          <div class="img-wrap img-placeholder square"><img src="images/Lucas.png" alt="Lucas" /></div>
+          <div class="name">Lucas</div>
+          <div class="char-detail">
+            <div class="char-detail-inner">
+              <p><strong>Starting Belief:</strong> Power would give his life meaning.</p>
+              <p><strong>Flaw:</strong> Romanticizes heroism and equates being chosen with being worthy.</p>
+              <p><strong>Midpoint Shift:</strong> Negotiates with the Realmkeeper and begins acting as a leader.</p>
+              <p><strong>Climax:</strong> Nearly kills Derrik in grief after Aira vanishes.</p>
+              <p><strong>End State:</strong> Learns that power without restraint is dangerous.</p>
+            </div>
+          </div>
+        </div>
+        <div class="char-panel" data-char="derrik" tabindex="0" role="button">
+          <div class="img-wrap img-placeholder square">Coming Soon</div>
+          <div class="name">Derrik</div>
+          <div class="char-detail">
+            <div class="char-detail-inner">
+              <p><strong>Motivation:</strong> Seeks power to prove his worth.</p>
+              <p><strong>Pressure:</strong> Driven by desperation and the need to prove himself.</p>
+              <p><strong>Conflict:</strong> Steals the Realm Crystal.</p>
+              <p><strong>Turning Point:</strong> Witnesses Aira's sacrifice.</p>
+              <p><strong>Finale:</strong> Says "Better you than him" before throwing himself from the cliff.</p>
+            </div>
+          </div>
+        </div>
+        <div class="char-panel" data-char="aira" tabindex="0" role="button">
+          <div class="img-wrap img-placeholder square">Coming Soon</div>
+          <div class="name">Aira</div>
+          <div class="char-detail">
+            <div class="char-detail-inner">
+              <p><strong>Role:</strong> Voice of balance and restraint.</p>
+              <p><strong>Strength:</strong> Understands boundaries between realms.</p>
+              <p><strong>Climax Action:</strong> Enters the unstable tear to retrieve and stabilize the Realm Crystal.</p>
+              <p><strong>Outcome:</strong> Vanishes with the Crystal.</p>
+            </div>
+          </div>
+        </div>
+        <div class="char-panel" data-char="realmkeeper" tabindex="0" role="button">
+          <div class="img-wrap img-placeholder square">Coming Soon</div>
+          <div class="name">The Realmkeeper</div>
+          <div class="char-detail">
+            <div class="char-detail-inner">
+              <p>Guardian of the Realm of the Dead.</p>
+              <p>Seeks restoration of natural order.</p>
+              <p>Strikes a temporary peace with Lucas's crew.</p>
+              <p>Holds knowledge about Aira's fate (Season Two reveal).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. STRUCTURAL BREAKDOWN -->
+  <section class="breakdown-section" id="breakdown">
+    <div class="section-inner">
+      <h2 class="section-title">Season One — Structural Breakdown</h2>
+      <p class="breakdown-intro">Season One is structured around escalating boundary instability, mirroring Lucas's growing loss of emotional control.</p>
+      <div class="breakdown-blocks">
+        <div class="breakdown-block">
+          <h3>Episode 1 — Awakening</h3>
+          <ul>
+            <li>Lucas discovers he is the Warrior of Light.</li>
+            <li>First confrontation with Derrik.</li>
+            <li>The Realm Crystal is introduced.</li>
+          </ul>
+        </div>
+        <div class="breakdown-block">
+          <h3>Episode 2 — Fractures</h3>
+          <ul>
+            <li>Tension grows within the team.</li>
+            <li>The escaped ghost subplot begins to surface.</li>
+            <li>Lucas struggles with leadership and expectation.</li>
+          </ul>
+        </div>
+        <div class="breakdown-block">
+          <h3>Episode 3 — Boundaries</h3>
+          <ul>
+            <li>The Realmkeeper confronts the crew.</li>
+            <li>Lucas negotiates a fragile agreement.</li>
+            <li>Derrik's pressure and desperation become more visible.</li>
+          </ul>
+        </div>
+        <div class="breakdown-block">
+          <h3>Episode 4 — Theft</h3>
+          <ul>
+            <li>Derrik steals the Realm Crystal.</li>
+            <li>Instability begins to form at the boundary.</li>
+            <li>Emotional fractures intensify.</li>
+          </ul>
+        </div>
+        <div class="breakdown-block">
+          <h3>Episode 5 — Collapse</h3>
+          <ul>
+            <li>The Crystal is activated recklessly.</li>
+            <li>A destabilizing tear forms.</li>
+            <li>Reality begins to strain under misuse.</li>
+          </ul>
+        </div>
+        <div class="breakdown-block breakdown-block--finale">
+          <h3>Episode 6 — The Fall</h3>
+          <ul>
+            <li>Aira enters the rupture to stabilize it.</li>
+            <li>Both Aira and the Crystal vanish.</li>
+            <li>Lucas confronts Derrik in rage.</li>
+            <li>Derrik says, "Better you than him," before throwing himself from the cliff.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. REALM SYSTEM -->
+  <section class="realm-section" id="realm">
+    <div class="section-inner">
+      <h2 class="section-title">The Structure of Life and Death</h2>
+      <div class="prose realm-prose">
+          <p>Souls normally travel to The End.</p>
+          <p>Serenia's proximity to the Realm of the Dead causes misdirection.</p>
+          <p>Ghosts are displaced souls, not undead.</p>
+          <p>The Realm Crystal allows controlled passage between Serenia and the Realm of the Dead.</p>
+          <p>Misuse destabilizes the boundary.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. REALM CRYSTAL -->
+  <section class="crystal-section" id="crystal">
+    <div class="section-inner">
+      <h2 class="section-title">The Realm Crystal</h2>
+      <div class="img-placeholder centered"><img src="images/Realm-Crystal.png" alt="Realm Crystal concept art" /></div>
+      <div class="prose">
+        <p>Requires focus and stability to function.</p>
+        <p>Intended for limited boundary crossing.</p>
+        <p>Misuse creates an unstable tear between life and death.</p>
+        <p>Becomes the catalyst for the Season One finale.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. FINALE TIMELINE -->
+  <section class="timeline-section" id="finale">
+    <div class="section-inner">
+      <h2 class="section-title">Season One — Final Sequence</h2>
+      <div class="timeline">
+        <div class="timeline-node"><span>Derrik activates the Realm Crystal in desperation.</span></div>
+        <div class="timeline-node"><span>The boundary destabilizes.</span></div>
+        <div class="timeline-node"><span>The Crystal falls into the tear.</span></div>
+        <div class="timeline-node"><span>Aira enters the rupture to stabilize it.</span></div>
+        <div class="timeline-node"><span>Both Aira and the Crystal vanish.</span></div>
+        <div class="timeline-node"><span>Lucas confronts Derrik.</span></div>
+        <div class="timeline-node"><span>Derrik reveals his fear and desperation.</span></div>
+        <div class="timeline-node timeline-node--derrik-fall"><span>Derrik throws himself from the cliff.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. DESIGN PHILOSOPHY -->
+  <section class="philosophy-section" id="philosophy">
+    <div class="section-inner">
+      <h2 class="section-title">Narrative Focus This Term</h2>
+      <ul>
+        <li>Refining Season One structure.</li>
+        <li>Strengthening character arcs.</li>
+        <li>Clarifying world mechanics.</li>
+        <li>Ensuring antagonist motivations are emotionally grounded.</li>
+        <li>Designing long-form narrative payoff.</li>
+      </ul>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      // Accordion: one open at a time, smooth expand
+      var triggers = document.querySelectorAll('.accordion-trigger');
+      triggers.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var expanded = this.getAttribute('aria-expanded') === 'true';
+          var panel = document.getElementById(this.getAttribute('aria-controls'));
+          // Close all in this accordion
+          this.closest('.accordion').querySelectorAll('.accordion-trigger').forEach(function (t) {
+            t.setAttribute('aria-expanded', 'false');
+          });
+          this.closest('.accordion').querySelectorAll('.accordion-panel').forEach(function (p) {
+            p.removeAttribute('data-open');
+          });
+          if (!expanded) {
+            this.setAttribute('aria-expanded', 'true');
+            if (panel) panel.setAttribute('data-open', '');
+          }
+        });
+      });
+
+      // Character panels: toggle open/close
+      var panels = document.querySelectorAll('.char-panel');
+      panels.forEach(function (panel) {
+        function toggle() {
+          var isOpen = panel.classList.contains('is-open');
+          panels.forEach(function (p) { p.classList.remove('is-open'); });
+          if (!isOpen) panel.classList.add('is-open');
+        }
+        panel.addEventListener('click', toggle);
+        panel.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggle();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
